@@ -1,9 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import routes from "./utils/routes";
 
-const App = () => {
-	return <div>This is an entry component of our contacts app!</div>;
-};
+/**
+ * ! Simple hack to remember
+ * ? createBrowserRouter with RouterProvider
+ */
 
+// createBrowserRouter has two params:
+// 1. array of routes and/or nested routes
+// 2. DOM router options
+const router = createBrowserRouter(routes);
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(<RouterProvider router={router} />);
