@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 const Root = () => {
 	return (
@@ -25,10 +25,13 @@ const Root = () => {
 				<nav>
 					<ul>
 						<li>
-							<a href={`/contacts/1`}>Taukir Khatri</a>
+							{/* We just need to change 'a href' with 'Link to' */}
+							{/* With 'a href' we had a problem of reloading the page on clicking the link */}
+							{/* <a href={`/contacts/1`}>Taukir Khatri</a> */}
+							<Link to={`/contacts/1`}>Taukir Khatri</Link>
 						</li>
 						<li>
-							<a href={`/contacts/2`}>Zafar Khatri</a>
+							<Link to={`/contacts/2`}>Zafar Khatri</Link>
 						</li>
 					</ul>
 				</nav>
