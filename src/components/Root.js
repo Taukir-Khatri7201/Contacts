@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 const Root = () => {
 	return (
@@ -24,15 +25,22 @@ const Root = () => {
 				<nav>
 					<ul>
 						<li>
-							<a href={`/contacts/1`}>Your Name</a>
+							<a href={`/contacts/1`}>Taukir Khatri</a>
 						</li>
 						<li>
-							<a href={`/contacts/2`}>Your Friend</a>
+							<a href={`/contacts/2`}>Zafar Khatri</a>
 						</li>
 					</ul>
 				</nav>
 			</div>
-			<div id="detail"></div>
+			<div id="detail">
+				{/**
+				 * We want to display the Contact component here. So place a Outlet here.
+				 * Outlet works as a placeholder.
+				 * We will put our components inside at place of Outlet as per the need.
+				 * */}
+				<Outlet />
+			</div>
 		</>
 	);
 };
