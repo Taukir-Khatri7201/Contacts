@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Outlet,
 	useLoaderData,
@@ -6,12 +6,15 @@ import {
 	redirect,
 	NavLink,
 	useNavigation, // used to show the loaders
+	useSubmit,
 } from "react-router-dom";
 import { createContact, getContacts } from "../utils/contacts";
 
-export async function loader() {
-	const contacts = await getContacts();
-	return { contacts };
+export async function loader({ request }) {
+	const url = new URL(request.url);
+	const query = url.searchParams.get("q");
+	const contacts = await getContacts(query);
+	return { contacts, query };
 }
 
 export async function action() {
@@ -20,13 +23,21 @@ export async function action() {
 }
 
 const Root = () => {
-	const { contacts } = useLoaderData();
+	const { contacts, query } = useLoaderData();
 	const navigation = useNavigation();
 	// useNavigation returns current navigation state
 	// It can be one of
 	// 	1. "idle"
 	// 	2. "submitting"
 	// 	3. "loading"
+	const submit = useSubmit();
+	const searching =
+		navigation.location &&
+		new URLSearchParams(navigation.location.search).has("q");
+
+	useEffect(() => {
+		document.getElementById("q").value = query;
+	});
 
 	return (
 		<>
@@ -40,8 +51,21 @@ const Root = () => {
 							placeholder="Search"
 							type="search"
 							name="q"
+							defaultValue={query}
+							className={searching ? "loading" : ""}
+							onChange={(e) => {
+								// This prevents the history stack of the browser to have page for each key press
+								const firstSearch = query == null;
+								submit(e.currentTarget.form, {
+									replace: !firstSearch,
+								});
+							}}
 						/>
-						<div id="search-spinner" aria-hidden hidden={true} />
+						<div
+							id="search-spinner"
+							aria-hidden
+							hidden={!searching}
+						/>
 						<div className="sr-only" aria-live="polite"></div>
 					</form>
 					<Form method="post">
