@@ -1,17 +1,36 @@
 import React from "react";
-import { Form, useLoaderData } from "react-router-dom";
-import { getContact } from "../utils/contacts";
+import { Form, useLoaderData, useFetcher } from "react-router-dom";
+import { getContact, updateContact } from "../utils/contacts";
 
 export async function loader({ params }) {
 	const contact = await getContact(params.id);
+	if (!contact) {
+		// If contact is not found, then throw an error
+		throw new Response("", {
+			status: 404,
+			statusText: "Contact not found!",
+		});
+	}
 	return { contact };
 }
 
+export async function action({ request, params }) {
+	const formData = await request.formData();
+	return updateContact(params.id, {
+		favorite: formData.get("favorite") === "true",
+	});
+}
+
 const Favorite = ({ contact }) => {
-	// yes, this is a `let` for later
+	const fetcher = useFetcher();
 	let favorite = contact.favorite;
+
+	if (fetcher.formData) {
+		favorite = fetcher.formData.get("favorite") === "true";
+	}
+
 	return (
-		<Form method="post">
+		<fetcher.Form method="post">
 			<button
 				name="favorite"
 				value={favorite ? "false" : "true"}
@@ -21,7 +40,7 @@ const Favorite = ({ contact }) => {
 			>
 				{favorite ? "★" : "☆"}
 			</button>
-		</Form>
+		</fetcher.Form>
 	);
 };
 

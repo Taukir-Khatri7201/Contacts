@@ -3,7 +3,10 @@ import Root, {
 	action as rootAction,
 } from "../components/Root";
 import Error from "../components/Error";
-import Contact, { loader as contactLoader } from "../components/Contact";
+import Contact, {
+	loader as contactLoader,
+	action as contactAction,
+} from "../components/Contact";
 import EditContact, { action as editAction } from "../components/EditContact";
 import { action as destroyAction } from "../components/DeleteContact";
 import Index from "../components/Index";
@@ -18,28 +21,34 @@ export default routes = [
 		loader: rootLoader,
 		action: rootAction,
 		children: [
-			// ! This wil display as child of the Root element
-			// ? And we have to specify where we want to display this component inside Root component
-			// ? By using Outlet
 			{
-				index: true,
-				element: <Index />,
-			},
-			{
-				path: "contacts/:id",
-				element: <Contact />,
-				loader: contactLoader,
-			},
-			{
-				path: "contacts/:id/edit",
-				element: <EditContact />,
-				loader: contactLoader,
-				action: editAction,
-			},
-			{
-				path: "contacts/:id/destroy",
-				action: destroyAction,
-				errorElement: <div>Oops! Something went wrong!</div>,
+				errorElement: <Error />,
+				children: [
+					// ! This wil display as child of the Root element
+					// ? And we have to specify where we want to display this component inside Root component
+					// ? By using Outlet
+					{
+						index: true,
+						element: <Index />,
+					},
+					{
+						path: "contacts/:id",
+						element: <Contact />,
+						loader: contactLoader,
+						action: contactAction,
+					},
+					{
+						path: "contacts/:id/edit",
+						element: <EditContact />,
+						loader: contactLoader,
+						action: editAction,
+					},
+					{
+						path: "contacts/:id/destroy",
+						action: destroyAction,
+						errorElement: <div>Oops! Something went wrong!</div>,
+					},
+				],
 			},
 		],
 	},
