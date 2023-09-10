@@ -4,6 +4,7 @@ import Root, {
 } from "../components/Root";
 import Error from "../components/Error";
 import Contact, { loader as contactLoader } from "../components/Contact";
+import EditContact, { action as editAction } from "../components/EditContact";
 
 // We need to provide the Error component to errorElement prop for the path to fallback to
 // if the path does not match with any route or subroutes.
@@ -22,6 +23,12 @@ export default routes = [
 				path: "contacts/:id",
 				element: <Contact />,
 				loader: contactLoader,
+			},
+			{
+				path: "contacts/:id/edit",
+				element: <EditContact />,
+				loader: contactLoader,
+				action: editAction,
 			},
 		],
 	},

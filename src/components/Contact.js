@@ -26,7 +26,7 @@ const Favorite = ({ contact }) => {
 };
 
 const Contact = () => {
-	const contact = useLoaderData();
+	const { contact } = useLoaderData();
 
 	return (
 		<div id="contact">
