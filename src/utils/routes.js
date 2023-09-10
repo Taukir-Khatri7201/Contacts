@@ -6,6 +6,7 @@ import Error from "../components/Error";
 import Contact, { loader as contactLoader } from "../components/Contact";
 import EditContact, { action as editAction } from "../components/EditContact";
 import { action as destroyAction } from "../components/DeleteContact";
+import Index from "../components/Index";
 
 // We need to provide the Error component to errorElement prop for the path to fallback to
 // if the path does not match with any route or subroutes.
@@ -21,6 +22,10 @@ export default routes = [
 			// ? And we have to specify where we want to display this component inside Root component
 			// ? By using Outlet
 			{
+				index: true,
+				element: <Index />,
+			},
+			{
 				path: "contacts/:id",
 				element: <Contact />,
 				loader: contactLoader,
@@ -34,6 +39,7 @@ export default routes = [
 			{
 				path: "contacts/:id/destroy",
 				action: destroyAction,
+				errorElement: <div>Oops! Something went wrong!</div>,
 			},
 		],
 	},
