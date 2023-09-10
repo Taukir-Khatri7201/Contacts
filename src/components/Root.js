@@ -1,11 +1,11 @@
 import React from "react";
 import {
 	Outlet,
-	Link,
 	useLoaderData,
 	Form,
 	redirect,
 	NavLink,
+	useNavigation, // used to show the loaders
 } from "react-router-dom";
 import { createContact, getContacts } from "../utils/contacts";
 
@@ -21,11 +21,17 @@ export async function action() {
 
 const Root = () => {
 	const { contacts } = useLoaderData();
+	const navigation = useNavigation();
+	// useNavigation returns current navigation state
+	// It can be one of
+	// 	1. "idle"
+	// 	2. "submitting"
+	// 	3. "loading"
 
 	return (
 		<>
 			<div id="sidebar">
-				<h1>React Router Contacts</h1>
+				<h1>Contacts</h1>
 				<div>
 					<form id="search-form" role="search">
 						<input
@@ -76,7 +82,10 @@ const Root = () => {
 					)}
 				</nav>
 			</div>
-			<div id="detail">
+			<div
+				id="detail"
+				className={navigation.state === "loading" ? "loading" : ""}
+			>
 				{/**
 				 * We want to display the Contact component here. So place a Outlet here.
 				 * Outlet works as a placeholder.
