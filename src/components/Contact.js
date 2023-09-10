@@ -1,5 +1,11 @@
 import React from "react";
-import { Form } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
+import { getContact } from "../utils/contacts";
+
+export async function loader({ params }) {
+	const contact = await getContact(params.id);
+	return { contact };
+}
 
 const Favorite = ({ contact }) => {
 	// yes, this is a `let` for later
@@ -20,14 +26,7 @@ const Favorite = ({ contact }) => {
 };
 
 const Contact = () => {
-	const contact = {
-		first: "Taukir",
-		last: "Khatri",
-		avatar: "https://picsum.photos/200/200",
-		twitter: "KhatriTaukir",
-		notes: "Passionate about React Ecosystem 😉",
-		favorite: true,
-	};
+	const contact = useLoaderData();
 
 	return (
 		<div id="contact">
